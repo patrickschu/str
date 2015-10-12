@@ -48,8 +48,8 @@ speakerdicti=collections.defaultdict(list)
 for item in filedicti:
     speaker=filedicti[item][len(filedicti[item])-2]
     speakerdicti[speaker].append(filedicti[item])
-
-
+    
+#writing csv files
 for item in speakerdicti:
 	print "\n\n\nitem", item
 	entry=speakerdicti[item]
