@@ -1,4 +1,5 @@
 import codecs; import os; import collections; import numpy
+os.chdir("H:/str/files")
 
 #our normalization formula
 #
@@ -8,8 +9,7 @@ import codecs; import os; import collections; import numpy
 
 #enter directory to be processed here
 directory="H:/05_Speaker_csv_files"
-datafiles=["LB.csv"]
-#os.listdir(directory)
+datafiles=["AR_sp03.csv"]#os.listdir(directory)
 
 #readings csvs
 def csvreader(filename):
@@ -22,7 +22,8 @@ def csvreader(filename):
     return spreadsheet
 
 
-#making means and such for each spreadsheet
+#making means and such for each spreadsheet/speaker
+#takes an env (i.e. ST, STR...) and the dataset to extract it from 
 def meanmachine(env, dataset):
     cogs=[]
     for row in dataset:
@@ -39,6 +40,8 @@ def meanmachine(env, dataset):
 
 
 #normalizing individual data points once we have the relevant means etc
+#takes a row of data, the dictionary with means etc and the standard deviation
+#we'll be owrking with
 def normalizer(row, dicti, stdev):
     variable=row[3]
     cog2=float(row[9])
@@ -58,45 +61,43 @@ envs=["S","SH","STR", "ST", "SK", "SP"]
 
 
 
-#Main
+#MAIN
 #establishing mean, median, and stdev
-for item in datafiles:
+for fili in datafiles:
     #this dictioanry collects the means etc for each env for this speaker.
     meandicti=collections.defaultdict(list)
-    print item
+    print "\n\n-----\nfile: ",fili
     #we read in the csv files, dump all the data in the gigalist
-    dati=csvreader(os.path.join(directory,item))
+    dati=csvreader(os.path.join(directory,fili))
     for envi in envs:
+        #print envi
         #we fill the dictionary with the respective values
         meandicti[envi].append(meanmachine(envi, dati))
     # we calculate the stdev over all measurements by taking
     #the values for each env from the dictionary
     allvalues=[meandicti[envi][0][3] for envi in envs]
     #we need to flatten that
-    allvalues_flat=[item for sublist in allvalues for item in sublist]
+    allvalues_flat=[i for sublist in allvalues for i in sublist]
     stdev=numpy.std(allvalues_flat)
-    print stdev
+    #
+    #Just a lot of printing here
+    #
+    print "----\n\nstandard deviation ", stdev
+    print "mean and median S ", meandicti["S"][0][0], meandicti["S"][0][1]
+    print "mean and median SH ", meandicti["SH"][0][0], meandicti["SH"][0][1]
+    print "mean and median STR ", meandicti["STR"][0][0], meandicti["STR"][0][1]
+    #
+    #
+    output=open(fili.rstrip(".csv")+"_normalized.csv", "a")
+    #we write the column names
+    t=dati[0]+[u"cog2_normalized", u"env_extracted\n"]
+    output.write(",".join(t))
+    #we start at position 1 so we don't get the column names in our machinery
     for row in dati[1:len(dati)]:
-        #print row
+        #normalizer returns normalized value and the env
         result=normalizer(row, meandicti, stdev)
-        #row.append(result)
-        print result
-        
-        #print row
-        
-    
+        row.append(unicode(result[1]))
+        row.append(result[0])
+        output.write(",".join(row)+"\n")
+    output.close()
 
-print len(meandicti)
-
-    #meandicti[s_list.append(meanmachine("S", dati)
-    #sh_list.append(meanmachine("SH", dati)
-    #str_list.append(meanmachine("SH", dati)
-    #st_list.append(meanmachine("ST", dati)
-    #sk_list.append(meanmachine("SK", dati)
-    #sp_list.append(meanmachine("SP", dati)
-
-
-#get all the S, SH, etc for a mean
-#put that mean into list
-#normalizing data
-#raw score-population mean) / population standard deviation
