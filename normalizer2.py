@@ -9,7 +9,7 @@ os.chdir("H:/str/files")
 
 #enter directory to be processed here
 directory="H:/05_Speaker_csv_files"
-datafiles=["AR_sp03.csv"]#os.listdir(directory)
+datafiles=os.listdir(directory)
 
 #readings csvs
 def csvreader(filename):
@@ -47,8 +47,6 @@ def normalizer(row, dicti, stdev):
     cog2=float(row[9])
     #here cometh the formula
     numerator=cog2-((dicti["S"][0][0]-dicti["SH"][0][0])/2)
-    print dicti["S"][0][0]
-    print dicti["SH"][0][0]
     denominator=stdev
     normalized_value=numerator/denominator
     return ([variable,normalized_value])
@@ -66,7 +64,7 @@ envs=["S","SH","STR", "ST", "SK", "SP"]
 for fili in datafiles:
     #this dictioanry collects the means etc for each env for this speaker.
     meandicti=collections.defaultdict(list)
-    print "\n\n-----\nfile: ",fili
+    print "\n\n-----\n\nfile: ",fili
     #we read in the csv files, dump all the data in the gigalist
     dati=csvreader(os.path.join(directory,fili))
     for envi in envs:
