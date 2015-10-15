@@ -81,9 +81,9 @@ for fili in datafiles:
     #Just a lot of printing here
     #
     print "----\n\nstandard deviation ", stdev
-    print "mean and median S ", meandicti["S"][0][0], meandicti["S"][0][1]
-    print "mean and median SH ", meandicti["SH"][0][0], meandicti["SH"][0][1]
-    print "mean and median STR ", meandicti["STR"][0][0], meandicti["STR"][0][1]
+    print "mean and median S ", meandicti["S"][0][0], meandicti["S"][0][2]
+    print "mean and median SH ", meandicti["SH"][0][0], meandicti["SH"][0][2]
+    print "mean and median STR ", meandicti["STR"][0][0], meandicti["STR"][0][2]
     #
     #
     output=open(fili.rstrip(".csv")+"_normalized.csv", "a")
