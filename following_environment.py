@@ -5,7 +5,7 @@ os.chdir("H:/str/files")
 directory="H:/"
 
 #a message from our sponsors
-"This script is brought to you by Erica B."
+print "This script is brought to you by Erica B."
 
 datafile="allspeakers_normalized_metadata_lemmas.csv"
 
@@ -37,7 +37,7 @@ output=open("allspeakers_normalized_metadata_lemmas_environment.csv", "a")
 
 for row in dati[1:len(dati)]:
     foll_env=row[8]
-    print foll_env
+    #print foll_env
     stress=stressdict.get(foll_env[len(foll_env)-1], "NONE")
     hilo=hilodict.get(foll_env[:-1], "NONE")
     backfront=frontbackdict.get(foll_env[:-1], "NONE")
@@ -45,7 +45,7 @@ for row in dati[1:len(dati)]:
     #print hilo
     #print backfront
     #print hilo+backfront
-    print "-----------\n\n"
+    #print "-----------\n\n"
     result=[stress, hilo, backfront, hilo+backfront]
     row=row+result
     #print row
@@ -53,5 +53,3 @@ for row in dati[1:len(dati)]:
 
 output.close()
     
-    
-
